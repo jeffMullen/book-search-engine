@@ -16,7 +16,7 @@ module.exports = {
     }
 
     if (!token) {
-      console.log('no token')
+      return req;
     }
 
     // verify token and get user data out of it
