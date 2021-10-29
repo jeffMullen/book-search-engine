@@ -26,24 +26,17 @@ const LoginForm = () => {
 
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
-    console.log(form)
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     }
-
+    console.log(userFormData);
     try {
-      const response = await LOGIN_USER({ userFormData });
-      console.log(response);
+      const { data } = await login({
+        variables: { ...userFormData }
+      });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
+      Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
