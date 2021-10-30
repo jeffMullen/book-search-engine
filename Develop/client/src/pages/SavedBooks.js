@@ -15,7 +15,7 @@ const SavedBooks = () => {
     const getUserData = async () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+        console.log(token)
         if (!token) {
           return false;
         }

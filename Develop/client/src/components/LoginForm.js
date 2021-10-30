@@ -19,8 +19,6 @@ const LoginForm = () => {
     setUserFormData({ ...userFormData, [name]: value });
   };
 
-  console.log(userFormData);
-
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -30,7 +28,6 @@ const LoginForm = () => {
       event.preventDefault();
       event.stopPropagation();
     }
-    console.log(userFormData);
     try {
       const { data } = await login({
         variables: { ...userFormData }
