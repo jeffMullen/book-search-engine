@@ -8,10 +8,8 @@ const resolvers = {
             return User.find();
         },
         me: async (parent, args, context) => {
-            console.log('🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯', context.user)
-
             if (context.user) {
-                return User.findOne({ _id: context.user._id })
+                return User.findOne({ _id: context.user._id });
             }
             throw new AuthenticationError('No user id found')
 
@@ -53,14 +51,28 @@ const resolvers = {
                 return await User.findOneAndUpdate(
                     { _id: context.user._id },
                     {
-                        $addToSet: {
+                        $push: {
                             savedBooks: book
                         }
-                    }
+                    },
+                    { new: true }
                 );
-
             };
             throw new AuthenticationError('Must be logged in')
+        },
+        removeBook: async (parent, { bookId }, context) => {
+            if (context.user) {
+                return await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    {
+                        $pull: {
+                            savedBooks: { bookId }
+                        }
+                    },
+                    { new: true }
+                );
+            };
+            throw new AuthenticationError('remove book not working')
         }
     }
 }
