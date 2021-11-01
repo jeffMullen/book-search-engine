@@ -5,6 +5,7 @@ import decode from 'jwt-decode';
 class AuthService {
   // get user data
   getProfile() {
+    console.log(decode(this.getToken))
     return decode(this.getToken());
   }
 
@@ -12,7 +13,6 @@ class AuthService {
   loggedIn() {
     // Checks if there is a saved token and it's still valid
     const token = this.getToken();
-    console.log(token)
     return !!token && !this.isTokenExpired(token); // handwaiving here
   }
 

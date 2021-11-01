@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Book } = require('../models');
+const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -7,8 +7,14 @@ const resolvers = {
         users: async () => {
             return User.find();
         },
-        me: async (parent, { userId }) => {
-            return User.findOne({ _id: userId })
+        me: async (parent, args, context) => {
+            console.log('🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯', context.user)
+
+            if (context.user) {
+                return User.findOne({ _id: context.user._id })
+            }
+            throw new AuthenticationError('No user id found')
+
         }
     },
     Mutation: {
@@ -35,7 +41,6 @@ const resolvers = {
             return { token, user };
         },
         saveBooks: async (parent, { authors, description, bookId, image, link, title }, context) => {
-            console.log('🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯', context.user)
             const book = {
                 authors,
                 description,
